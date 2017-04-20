@@ -1,0 +1,48 @@
+Below is the HDFS location:
+hadoop fs -put /home/acadgild/data/locations.txt /user/acadgild/location
+
+[acadgild@localhost ~]$ hadoop fs -cat /user/acadgild/location
+17/04/19 18:33:31 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+1	UP
+2	BIHAR
+3	MP
+4	AP
+5	MAHARASHTRA
+6	GOA
+7	TN
+8	KERALA
+3	HP
+
+[acadgild@localhost ~]$ sudo service mysqld start
+[sudo] password for acadgild: 
+Starting mysqld:                                           [  OK  ]
+[acadgild@localhost ~]$ mysql -u root
+
+mysql> create database sqoop;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use sqoop;
+Database changed
+
+mysql> create table locations (id int not null primary key, state varchar(20));
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from locations;
+Empty set (0.00 sec)
+
+[acadgild@localhost ~]$ sqoop export --connect jdbc:mysql://localhost/sqoop --username 'root' -P --table locations --update-mode allowinsert --update-key id --export-dir '/user/acadgild/location' --input-fields-terminated-by '\t' 
+
+mysql> select * from locations;
++----+-------------+
+| id | state       |
++----+-------------+
+|  8 | KERALA      |
+|  3 | HP          |
+|  4 | AP          |
+|  5 | MAHARASHTRA |
+|  1 | UP          |
+|  2 | BIHAR       |
+|  6 | GOA         |
+|  7 | TN          |
++----+-------------+
+8 rows in set (0.00 sec)

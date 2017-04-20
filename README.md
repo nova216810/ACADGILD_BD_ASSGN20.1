@@ -1,0 +1,2 @@
+# ACADGILD_BD_ASSGN20.1
+Sqoop Export
